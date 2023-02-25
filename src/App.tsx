@@ -45,6 +45,16 @@ const App: React.FC = () => {
         } else return todo
       })
     })
+    setDoneList((prevTodoList) => {
+      return prevTodoList.map((todo) => {
+        if(todo.id === id) {
+          return ({
+            ...todo,
+            isCompleted: !todo.isCompleted
+          })
+        } else return todo
+      })
+    })
   }
 
   const toDoElements = todoList.map((element, index) : JSX.Element => {

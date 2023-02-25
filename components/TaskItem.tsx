@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react'
 import { AiFillEdit, AiFillDelete, AiOutlineCheck } from 'react-icons/ai'
 import {Todo} from '../src/taskModel'
+import {Draggable} from 'react-beautiful-dnd'
 
 interface Props {
   key: number;
@@ -11,6 +12,7 @@ interface Props {
   id: number;
   todoList: Todo[];
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>
+  index: number;
 }
 
 const styles = {
@@ -39,41 +41,51 @@ const TaskItem: React.FC<Props> = (props) => {
   }, [edit])
 
   return (
-    <form className = "task--container" onSubmit = {
-      (e) => {
-        handleEdit(e, props.id)
-      }
-    } > 
-    
-    {edit ? (
-      <input ref = {editInputRef} 
-      className = "edit--input" type="text" value = {editTodo} onChange = {
-        (event) => {
-          setEditTodo(event.target.value)
-        }
-      } />
-    ) : (
-       props.isCompleted ? 
-        <h1 className="task--title" style = {styles} > {props.value} </h1> :
-        <h1 className="task--title"> {props.value}  </h1>  
-    )
-    }
-
-      <div className="task--icon--container">
-        <p className="task--status" onClick = {props.toggleDone}> <AiOutlineCheck/> </p>
-
-        <p className="task--delete" onClick = {props.removeTask} > <AiFillDelete/> </p>
-
-        <p className="task--edit" onClick = {
-          () => {
-            if(!edit && !props.isCompleted) {
-              setEdit((prevEdit) => !prevEdit)
+    <Draggable 
+    draggableId = {props.id.toString()} 
+    index = {props.index}
+    >
+      {
+        (provided) => {
+          return (
+            <form 
+              className = "task--container" 
+              onSubmit = {(e) => handleEdit(e, props.id)} 
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref = {provided.innerRef} 
+            > 
+            {edit ? (
+              <input ref = {editInputRef} 
+              className = "edit--input" type="text" value = {editTodo} onChange = {
+                (event) => {
+                  setEditTodo(event.target.value)
+                }
+              } />
+            ) : (
+               props.isCompleted ? 
+                <h1 className="task--title" style = {styles} > {props.value} </h1> :
+                <h1 className="task--title"> {props.value}  </h1>  
+            )
             }
-          }
-        } > <AiFillEdit/> </p>
-
-      </div>
-    </form>
+        
+              <div className="task--icon--container">
+                <p className="task--status" onClick = {props.toggleDone}> <AiOutlineCheck/> </p>
+                <p className="task--delete" onClick = {props.removeTask} > <AiFillDelete/> </p>
+                <p className="task--edit" onClick = {
+                  () => {
+                    if(!edit && !props.isCompleted) {
+                      setEdit((prevEdit) => !prevEdit)
+                    }
+                  }
+                } > <AiFillEdit/> </p>
+        
+              </div>
+            </form>
+          )
+        }
+      }
+    </Draggable>
   )
 }
 

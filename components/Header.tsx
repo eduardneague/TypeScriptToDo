@@ -6,7 +6,7 @@ const Header: React.FC = () => {
     <div className = "header--container">
         <h1 className = "header--title">
           edu's 
-          <img alt = "TypeScript"src = './public/typescript.png' className = "typescriptLogo"/> 
+          <img alt = "TypeScript"src = '/typescript.png' className = "typescriptLogo"/> 
           To Do List
         </h1>
         

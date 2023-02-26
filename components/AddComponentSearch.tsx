@@ -22,6 +22,7 @@ const inputRef = useRef<HTMLInputElement>(null)
                 onChange = {props.handleSearchChange}
                 value = {props.searchValue}
                 ref = {inputRef}
+                
                 />
 
                 <input 
